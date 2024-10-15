@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PhyGenBench</title>
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://kit.fontawesome.com/ff7b420e80.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bulma-carousel@4.0.3/dist/js/bulma-carousel.min.js"></script>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="PhyGenBench: A Benchmark for Physics Generation">
+  <meta name="keywords" content="PhyGenBench, Physics Generation, Benchmark ">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> PhyGenBench: <b>Phy</b>sics <b>Gen</b>eration <b>Bench</b>mark</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="stylesheet" href="./static/css/leaderboard.css">
+
+  <!-- <link href="https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_bulma.min.css" rel="stylesheet">
+  <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js"></script> -->
+  <script type="text/javascript" src="static/js/sort-table.js" defer></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/question_card.js"></script>
+  <script src="./data/results/data_setting.js" defer></script>
+  <script src="./data/results/model_scores.js" defer></script>
+  <script src="./visualizer/data/data_public.js" defer></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://github.com/OpenGVLab/Multi-Modality-Arena">
+            <b>Lvlm-ehub</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://github.com/OpenGVLab/MMT-Bench">
+            <b>MMT-Bench</b> <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+          <a class="navbar-item" href="https://mmiu-bench.github.io/">
+            <b>MMIU-Bench</b>
+            <p style="font-size:18px; display: inline; margin-left: 5px;">🔥</p>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title is-bold">
+            <span class="MMIU" style="vertical-align: middle">PhyGenBench</span>
+            </h1>
+          <h2 class="subtitle is-3 publication-subtitle">
+       Towards World Simulator: Crafting Physical Commonsense-Based Benchmark for Video Generation
+          </h2>
+           <div class="is-size-5 publication-authors">
+            
+            <span class="author-block">
+              Fanqing Meng<sup>*,</sup><sup style="color:#6fbf73;">1</sup><sup>,</sup><sup style="color:#ed4b82;">2</sup></a>
+              ,
+            </span>
+           
+            <span class="author-block">
+              Jiaqi Liao<sup>*,</sup><sup style="color:#ed4b82;">2</sup>,</a>
+            </span>
+            <span class="author-block">
+              Xinyu Tan</a>,
+            </span>
+            
+            <span class="author-block">Wenqi Shao<sup style="color:#ed4b82;">2</sup><sup>,</sup><sup>†</sup>,</span>
+            <span class="author-block">Quanfeng Lu<sup style="color:#ed4b82;">2</sup>,</span>
+            <span class="author-block">Kaipeng Zhang<sup style="color:#ed4b82;">2</sup>,</span>
+            <span class="author-block">Yu Cheng<sup style="color:#007bff;">4</sup><sup>,</sup></a></span>
+            <span class="author-block">Dianqi Li,</a></span>
+            <span class="author-block">Yu Qiao<sup style="color:#ed4b82;">1</sup>,</span>
+            
+            <span class="author-block">
+              Ping Luo<sup style="color:#ffac33;">3</sup><sup>,</sup><sup style="color:#ed4b82;">2</sup><sup>,</sup><sup>†</sup></span>
+          </div>
+          
+          <br>
+          
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup style="color:#6fbf73;">1</sup>Shanghai Jiao Tong University,</span>
+            <span class="author-block"><sup style="color:#ed4b82;">2</sup>OpenGVLab, Shanghai AI Laboratory</span></br>
+            <span class="author-block"><sup style="color:#ffac33;">3</sup>The University of Hong Kong,</span>
+            <span class="author-block"><sup style="color:#007bff;">4</sup>The Chinese University of Hong Kong,</span>
+          </div>
+
+          <br> 
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">*Equal contribution</span><br>
+            <span class="author-block">†Corresponding Author:</span>
+            <span class="author-block"><a href="mailto:shaowenqi@pjlab.org.cn">shaowenqi@pjlab.org.cn</a>,</span>
+            <span class="author-block"><a href="mailto:pluo@cs.hku.hk">pluo@cs.hku.hk</a></span>
+          </div>
+          
+          <div class="content has-text-centered">
+            <b>Because the number of videos uploaded is large, the loading may be slow. If this happens, please be patient and wait for a  while. </b>
+          </div>
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- <span class="link-block">
+                <a href="https://huggingface.co/datasets/FanqingM/MMIU-Benchmark"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <!-- <i class="far fa-images"></i> -->
+                      <!-- <p style="font-size:18px">🤗</p> -->
+                      <!-- 🔗 -->
+                  <!-- </span>
+                  <span>Dataset</span>
+                </a>
+              </span>  -->
+              <span class="link-block">
+                <a href="https://github.com/PhyGenBench/PhyGenBench"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              
+              <!-- Leaderboard Link. -->
+              <span class="link-block">
+                <a href="#leaderboard"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon has-text-white">
+                    <i class="fa-solid fa-trophy"></i>
+                  </span>
+                  <span>Leaderboard</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+  }
+</style>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <!-- <div class="hero-body">
+      <img src="static/images/tease_scores.png" alt="Examples from the dataset"/>
+      <h2 class="subtitle has-text-centered">
+        <span class="dnerf">Nerfies</span> turns selfie videos from your phone into
+        free-viewpoint
+        portraits.
+      </h2>
+    </div> -->
+      <!-- <div class="box m-5"> -->
+        
+        <div class="content has-text-centered">
+          <h2 class="title is-3">Overview</h2></div>
+          <div class="content has-text-justified">
+          <img src="static/images/PhyGenBench.png" alt="PhyGenBench" width="100%"/>
+            <p>Overview of PhyGenBench. <b>PhyGenBench</b> comprises 160 carefully crafted prompts across 27 distinct physical laws, spanning four fundamental physical domains, which could comprehensively assesses models' understanding of physical commonsense. We generated 1280 videos by evaluating 8 advanced models.Additionally, our captions encompass totally 165 unique objects and 42 unique actions with an average
+            length of 18.75 words.</p>
+          </p>
+        </div>
+      <!-- </div> -->
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="margin-bottom: 2vh;">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">🔔News</h2>
+        <div class="content has-text-center">
+          <p>
+            <b>🔥We release the code and data at <a href="https://github.com/PhyGenBench/PhyGenBench">github</a>.</b>
+          </p>
+      </div>      
+        <h2 class="title is-3">Introduction</h2>
+        <div class="content has-text-justified">
+          <p>
+            Text-to-video (T2V) models like Sora have made significant strides in visualizing complex prompts, which is increasingly
+            viewed as a promising path towards constructing the universal world simulator. Cognitive psychologists believe
+            that the foundation for achieving this goal is the ability to understand intuitive
+            physics. However, the capacity of these models to accurately represent intuitive
+            physics remains largely unexplored. To bridge this gap, we introduce PhyGenBench, a comprehensive Physics Generation
+            Benchmark designed to evaluate
+            physical commonsense correctness in T2V generation. PhyGenBench comprises
+            160 carefully crafted prompts across 27 distinct physical laws, spanning four fundamental domains, which could
+            comprehensively assesses models' understanding of physical commonsense. Alongside PhyGenBench, we propose a novel
+            evaluation framework called PhyGenEval. This framework employs a hierarchical evaluation structure utilizing appropriate
+            advanced vision-language models
+            and large language models to assess physical commonsense. Through PhyGenBench and PhyGenEval, we can conduct large-scale
+            automated assessments of
+            T2V models' understanding of physical commonsense, which align closely with
+            human feedback. Our evaluation results and in-depth analysis demonstrate that
+            current models struggle to generate videos that comply with physical commonsense. Moreover, simply scaling up models or
+            employing prompt engineering
+            techniques is insufficient to fully address the challenges presented by PhyGenBench (e.g., dynamic physical
+            phenomenons). We hope this study will inspire
+            the community to prioritize the learning of physical commonsense in these models beyond entertainment applications.
+          </p>
+        </div>
+        <img src="static/images/crop_demo_00.png" alt="demo" class="center">
+        <div>
+            Samples of videos generated by Kling or Gen-3 in PhyGenBench with 4 different aspects.
+            The results show that current T2V models struggle to generate videos that align with physical commonsense (e.g., the
+            lack of a plane's reflection in water in the first video of the second row).
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+</div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+  <h1 class="title is-1 MMIU">
+    <span class="MMIU" style="vertical-align: middle">PhyGenBench
+    </span>
+  </h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <!-- <div class="column is-full-width has-text-centered"> -->
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Benchmark Construction</h2>
+        <div class="content has-text-justified">
+          <img src="static/images/construction pipeline.png" alt="pipeline" class="center">
+          <br>
+          <p>
+            An illustration of our data construction pipeline which divides into 4 stages.First, We select key physical laws and manually craft initial prompts that reflect the corresponding physical phenomena in <b>Prompt Engineering</b>.Then GPT-4o adds details in <b>Prompt Augmentation</b> and enhances diversity by varying objects in <b
+            >Diversity Enhancement</b>. Finally, After manual review in <b>Quality Control</b>, we obtain 160 T2V prompts.
+          </p>
+        </div>
+    </div>
+    </div>
+  </div>
+</section>
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+    <h1 class="title is-1 MMIU">
+      <span class="MMIU" style="vertical-align: middle">PhyGenEval
+      </span>
+    </h1>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <!-- <div class="column is-full-width has-text-centered"> -->
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Overview</h2>
+        <div class="content has-text-justified">
+          <img src="./static/images/crop_eval_00.png" alt="comparison" class="center" style="width: 200%; height: auto;">
+          <p>
+            An overview of the proposed PhyGenEval. <b>PhyGenEval</b> is divided into three parts: <b>Key
+            Physical Phenomena Detection</b>, <b>Physics Order Verification</b>, and <b>Overall Naturalness Evaluation</b>.
+            Each part uses an appropriate VLM in combination with physical-based customized questions generated by GPT-4o. The
+            final score is the combined result of the three parts. For the example in the
+            figure, the three-stage scores are 0, 1 (only q1 is correct), and 0. The final score is calculated as 0
+            </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .image-row {
+      display: center; /* Use flexbox layout */
+  }
+  .image-row img {
+      width: 40%; /* Each image takes up 50% of the width */
+  }
+</style>
+
+<section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+    <h1 class="title is-1 MMT-Bench">Experiment Results</h1>
+  </div>
+</section>
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <!-- <div class="column is-full-width has-text-centered"> -->
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Comparison Results</h2>
+        <div class="content has-text-justified">
+          <img src="./static/images/crop_eval_compare_00.png"  alt="comparison" class="center" style="width: 200%; height: auto;">
+          <p>
+            The comparison between PhyGenEval and existing T2V evaluation metrics including Videophy,VideoScore and DEVIL in PhyGenBench.<b>The score generated by the metric reflects the degree to which the video conforms to physics.The higher the score, the more the video conforms to physics</b>.</p>
+            <p>
+            Therefore,as shown in image, except for the proposed PhyGenEval, the current methods cannot reasonably assess the correctness of physical commosense in videos from PhyGenBench.In other words, PhyGenEval is much more closely aligned with human judgement.</p>
+        </div>
+          <div class="column is-full has-text-centered content">
+            <h2 class="title is-3" id="examples">Comparison Results Video Display</h2>
+            <div id="results-carousel" class="carousel results-carousel">
+             <div class="m-2">
+                <video width="200%" controls>
+                  <source src="./static/videos/eval/1.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <img src="./static/images/1.png" alt="evaluation" style="width:100%;">
+
+                <div class="content has-text-justified custom-background p-1 m-1 custom-font" style="height: 110px">
+                  <b>(a) A delicate, fragile <span style="color:red">egg</span> is
+                    hurled with <span style="color:red">significant force</span>
+                    towards a rugged, solid <span style="color:red">rock
+                    surface</span>, where it collides
+                    upon impact</b>
+                </div>
+                <div class="content has-text-justified custom-background1 p-1 m-1 custom-font" style="height: 125px">
+                  <b>Expected Phenomenon: the egg should break upon impact while the stone remains intact because the hardness of the egg is much lower than that
+                  of stone</b>
+                </div>
+              </div>
+              <div class="m-2">
+                <video width="200%" controls>
+                  <source src="./static/videos/eval/2.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <img src="./static/images/2.png" alt="evaluation" style="width:100%;">
+                <div class="content has-text-justified custom-background p-2 m-1 custom-font" style="height: 110px">
+                  <b>(b) A cup of oil is slowly poured
+                    out <span style="color:red">in the space station</span>,
+                    releasing the liquid into the
+                    surrounding area</b>
+                    </div>
+                    <div class="content has-text-justified custom-background1 p-2 m-1 custom-font" style="height: 125px">
+                      <b>Expected Phenomenon: the oil in the cup should float in the air due to loss of gravity in the space station</b>
+                    </div>
+              </div>
+              <div class="m-2">
+                <video width="200%" controls>
+                  <source src="./static/videos/eval/3.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <img src="./static/images/3.png" alt="evaluation" style="width:100%;">
+                <div class="content has-text-justified custom-background p-2 m-1 custom-font" style="height: 110px">
+                  <b>(c) A <span style="color:red">stone</span> is gently placed on
+                    the surface of a pool filled
+                    with water.</b>
+                </div>
+                <div class="content has-text-justified custom-background1 p-2 m-1 custom-font" style="height: 125px">
+                  <b>Expected Phenomenon: the stone should sink to the bottom of the pool due to high density </b>
+                </div>
+              </div>
+              <div class="m-2">
+                <video width="200%" controls>
+                  <source src="./static/videos/eval/4.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <img src="./static/images/4.png" alt="evaluation" style="width:100%;">
+                <div class="content has-text-justified custom-background p-2 m-1 custom-font" style="height: 110px">
+                  <b>(d) A timelapse captures the
+                    reaction a s <span style="color:red">concentrated
+                    sulfuric acid</span> is poured onto a
+                    piece of <span style="color:red">bread</span>.</b>
+                </div>
+                <div class="content has-text-justified custom-background1 p-2 m-1 custom-font" style="height: 125px">
+                  <b>Expected Phenomenon: the bread should shrink, turn black and become carbonized due to the dehydrating effect of concentrated sulfuric acid </b>
+                </div>
+              </div>
+              <div class="m-2">
+                <video width="200%" controls>
+                  <source src="./static/videos/eval/5.mp4" type="video/mp4">
+        
+                </video>
+                <img src="./static/images/5.png" alt="evaluation" style="width:100%;">
+                <div class="content has-text-justified custom-background p-2 m-1 custom-font" style="height: 110px">
+                  <b>(e) A piece of <span style="color:red">copper</span> is ignited,
+                    emitting a vivid and unique
+                    flame as it burns steadily.</b>
+                </div>
+                <div class="content has-text-justified custom-background1 p-2 m-1 custom-font" style="height: 125px">
+                  <b>Expected Phenomenon: because the flame color reaction of copper is green, the color of the flame should be green</b>
+                </div>
+              </div>
+              <div class="m-2">
+                <video width="200%" controls>
+                  <source src="./static/videos/eval/6.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+                <img src="./static/images/6.png" alt="evaluation" style="width:100%;">
+                <div class="content has-text-justified custom-background p-2 m-1 custom-font" style="height: 110px">
+                  <b>(f) A kite is soaring above a
+                    <span style="color:red">smooth and tranquil pond</span></b>
+                </div>
+                <div class="content has-text-justified custom-background1 p-2 m-1 custom-font" style="height: 125px">
+                  <b>Expected Phenomenon: with the smooth and tranquil pond acting as a mirror,there should be the reflections of both the kite and the green mountains</b>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3" id="leaderboard">Quantitative Evaluation</h2>
+        <div class="content">
+         
+          <table>
+            <tr style="background-color:#E2F0D9;">
+              <th style="background-color:#E2F0D9;">Model</th>
+              <th style="background-color:#E2F0D9;">Size</th>
+              <th style="background-color:#E2F0D9;">Mechanics(↑)</th>
+              <th style="background-color:#E2F0D9;">Optics(↑)</th>
+              <th style="background-color:#E2F0D9;">Thermal(↑)</th>
+              <th style="background-color:#E2F0D9;">Material(↑)</th>
+              <th style="background-color:#E2F0D9;">Average(↑)</th>
+              <th style="background-color:#E2F0D9;">Human(↑)</th>
+            </tr>
+            <tr style="background-color:#FFF2CC;">
+              <td style="border:none;">CogVideoX</td>
+              <td style="border:none;">2B</td>
+              <td style="border:none;">0.38</td>
+              <td style="border:none;">0.43</td>
+              <td style="border:none;">0.34</td>
+              <td style="border:none;">0.39</td>
+              <td style="border:none;">0.39</td>
+              <td style="border:none;">0.31</td>
+            </tr>
+            <tr  style="background-color:#FFF2CC;">
+              <td style="border:none;">CogVideoX</td>
+              <td style="border:none;">5B</td>
+              <td style="border:none;">0.39</td>
+              <td style="border:none;">0.55</td>
+              <td style="border:none;">0.40</td>
+              <td style="border:none;">0.42</td>
+              <td style="border:none;">0.45</td>
+              <td style="border:none;">0.37</td>
+            </tr>
+            <tr style="background-color:#FFF2CC;">
+              <td style="border:none;">Open-Sora V1.2</td>
+              <td style="border:none;">1.1B</td>
+              <td style="border:none;">0.37</td>
+                <td style="border:none;">0.44</td>
+                <td style="border:none;">0.37</td>
+                <td style="border:none;">0.37</td>
+                <td style="border:none;">0.44</td>
+                <td style="border:none;">0.35</td>
+            </tr>
+          <tr style="background-color:#FFF2CC;">
+            <td style="border:none;">Lavie</td>
+            <td style="border:none;">860M</td>
+              <td style="border:none;">0.30</td>
+              <td style="border:none;">0.44</td>
+              <td style="border:none;">0.38</td>
+            <td style="border:none;">0.32</td>
+              <td style="border:none;">0.36</td>
+              <td style="border:none;">0.30</td>
+            </tr>
+            <tr style="background-color:#FFF2CC;">
+              <td style="border:none;">Vcthietz2.0</td>
+              <td style="border:none;">2B</td>
+              <td style="border:none;">0.41</td>
+              <td style="border:none;">0.56</td>
+              <td style="border:none;">0.44</td>
+              <td style="border:none;">0.37</td>
+              <td style="border:none;">0.45</td>
+              <td style="border:none;">0.36</td>
+            </tr>
+          <tr style="background-color:#FBE5D6;">
+              <td style="border:none;">Pika</td>
+              <td style="border:none;">-</td>
+              <td style="border:none;">0.35</td>
+              <td style="border:none;">0.46</td>
+              <td style="border:none;">0.39</td>
+              <td style="border:none;">0.39</td>
+              <td style="border:none;">0.39</td>
+              <td style="border:none;">0.36</td>
+            </tr>
+          <tr style="background-color:#FBE5D6;">
+              <td style="border:none;">Gen-3</td>
+              <td style="border:none;">-</td>
+              <td style="border:none;"><b>0.45</b></td>
+              <td style="border:none;">0.57</td>
+              <td style="border:none;">0.49</td>
+              <td style="border:none;"><b>0.51</b></td>
+              <td style="border:none;"><b>0.51</b></td>
+              <td style="border:none;">0.48</td>
+            </tr>
+          <tr style="background-color:#FBE5D6;">
+              <td style="border:none;">Kling</td>
+              <td style="border:none;">-</td>
+              <td style="border:none;"><b>0.45</b></td>
+              <td style="border:none;"><b>0.58</b></td>
+              <td style="border:none;"><b>0.50</b></td>
+              <td style="border:none;">0.40</td>
+              <td style="border:none;">0.49</td>
+              <td style="border:none;">0.44</td>
+            </tr>
+          </table>
+          <div class="content has-text-justified">
+            <p>
+            We conduct extensive experiments on a wide range of popular video
+            generation models. As illustrated in the Table above, even the best-performing model, Gen-3, only attains
+            a PCA score of 0.51 on PhyGenBench. This indicates that even for prompts containing obvious
+            physical commonsense, current T2V models struggle to generate videos that comply with intuitive
+            physics.It indirectly reflects that these models are still far from achieving the world simulator.</p>
+            <p>Furthermore, we identify the following key observations: </p>
+            <p><b>1): Across various categories of physical commonsense, all models consistently demonstrate superior performance in the domain of optics
+            compared to other areas. </b>Notably, Vchitect2.0 and CogVideoX-5b achieve a PCA score in the optics domain comparable to
+            that of closed-source models. We posit that this superior performance
+            in the optics domain can be attributed to the abundant and explicit representation of optical knowledge in pre-training
+            datasets, thereby enhancing the model's comprehension in this area.</p> 
+            <p><b>2): Kling and Gen-3 exhibit significantly higher performance compared to other models.</b> Specifically, Gen-3
+            demonstrates a robust understanding of material properties, achieving a score of 0.51, which substantially surpasses
+            other models. Kling performs particularly well in thermodynamics, attaining the
+            highest score of 0.50 in this domain. </p>
+            <p><b>3): Among open-source models, Vchitect2.0 and CogVideoX
+            5b perform comparatively well, both exceeding the performance level of Pika. </b>In contrast, Lavie
+            consistently exhibits lower physical correctness across all categories.</b>
+            </p>
+          </div>
+    <div class="columns is-centered m-6">
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3">Qualitative Evaluation</h2>
+        
+        <div class="columns is-centered ">
+          <div class="column is-full has-text-centered content">
+                <div class="content has-text-centered">
+                  <img src="static/images/crop_qualitive_00.png" alt="qualitative evaluation" style="width: 400%; height: auto;">
+          </div>
+            <div class="content has-text-justified">
+            <p>The different video cases for 4 physical commonsense categories are
+            illustrated in figure above. Our main observations are as follows:</p> <p><b>In mechanics, the models struggle to
+            generate simple physically accurate phenomenons.</b> As shown in figure above, all models fail to depict
+            the glass ball sinking in water. As for (b), instead showing it floating on the surface, OpenSora and
+            Gen-3 even produce videos where the ball is suspended. Additionally, the models do not capture
+            special physical phenomenons, such as the state of water in zero gravity, as seen in (a). </p><p><b>In optics, the
+            models perform relatively better</b>. (c) and (d) show the models handling reflections of balloons in water and colorful
+            bubbles, though OpenSora and CogVideoX still produce reflections with noticeable
+            distortions in (d).</p> <p><b>In thermal, the models fail to generate accurate videos of phase transitions.</b> For the
+            melting phenomenon in (e), most models show incorrect results, with CogVideoX even producing
+            a video where the ice cream increases in size. Similar errors appear in the sublimation process in
+            (f), with only Gen-3 showing partial understanding.</p> <p><b>Regarding material properties</b>, (g) shows all
+            models failing to recognize that an egg should break when hitting a rock, with Kling displaying the
+            egg bouncing like a rubber ball. For simple chemical reactions, such as the black bread experiment
+            in (h), none of the models demonstrate an accurate understanding of the expected reaction.</p>
+            <p><b>In conclusion,</b> current models perform relatively well in
+            generating optical phenomenons but are weaker in mechanics, thermal, and material properties.</p>
+            </div>
+      <div class="column is-full has-text-centered content">
+        <h2 class="title is-3" id="examples">Qualitative Evaluation Video Display</h2>
+        <div id="results1-carousel" class="carousel results-carousel">
+            <div class="content has-text-justified custom-background custom-font p-1" style="height: 100px;font-size:12px">
+              (a) A cup of oil is slowly poured out <span style="color:red">in the space station</span>, releasing the liquid into the surrounding area
+            </div>
+            
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/1-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+          </div>
+          <div >
+            <video width="200%" controls>
+              <source src="./static/videos/qualitative/1-2.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div>
+            <video width="200%" controls>
+              <source src="./static/videos/qualitative/1-3.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div >
+            <video width="200%" controls>
+              <source src="./static/videos/qualitative/1-4.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:12px">
+            Expected Phenomenon: the oil in the cup should float in the air due to loss of gravity in the space station
+          </div>
+            <div class="content has-text-justified custom-background p-1 custom-font" style="height: 102px;font-size:12px;">
+              (b) A <span style="color:red">solid glass ball</span> is gently placed on the surface of a bathtub filled with <span style="color:red">water</span>.
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/2-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/2-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/2-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/2-4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:12px">
+              <b>Expected Phenomenon: the glass ball should sink in to the bottom of the bathtub due to higher density than that of water</b>
+            </div>
+            <div class="content has-text-justified custom-background custom-font p-1 " style="height: 102px;font-size:12px;">
+              (c) <span style="color:green">A balloon</span> is floating over a serene and <span style="color:green">mirror-like ocean</span>.
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/3-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/3-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/3-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/3-4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:12px">
+              <b>Expected Phenomenon: there should be a reflection of the ballon in the ocean</b>
+            </div>
+            <div class="content has-text-justified custom-background custom-font p-1 custom-font" style="height: 102px;font-size:12px">
+            (d) A large number of <span style="color:green">soap bubbles</span> are floating in the air <span style="color:green">under the sunlight</span>.
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/4-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/4-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/4-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/4-4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:12px">
+              <b>Expected Phenomenon: the ice cream should melt due to inferenece & diffraction of sunlight</b>
+            </div>
+            <div class="content has-text-justified custom-background p-1 custom-font" style="height: 102px; font-size: 12px;">
+              (e) A timelapse captures the gradual transformation of <span style="color:red">ice cream</span> as the <span style="color:red">temperature rises significantly above 100 degree Celsius </span>.
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/5-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/5-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/5-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/5-4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+              <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:12px">
+                <b>Expected Phenomenon: the ice cream should melt due to high temperature</b>
+              </div>
+            <div class="content has-text-justified custom-background p-1 custom-font" style="height: 102px;font-size: 11px;">
+              (f) A timelapse captures the transformation of <span style="color:red">dry ice</span> as it is exposed to a <span style="color:red">significantly increasing temperature at room temperature</span>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/6-1.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/6-2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/6-3.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div>
+              <video width="200%" controls>
+                <source src="./static/videos/qualitative/6-4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:12px">
+              <b>Expected Phenomenon: the dry ice should sublime due to high temperature with white fog surrounding</b>
+            </div>
+              <div class="content has-text-justified custom-background p-1 custom-font" style="height: 102px;font-size: 12px;">
+                <b>(g) A <span style="color:red">delicate, fragile egg</span> is hurled with significant force towards a <span style="color:red">rugged, solid rock</span> surface, where it collides upon
+                impact
+                </b>
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/7-1.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/7-2.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/7-3.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/7-4.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:11px">
+                Expected Phenomenon: the egg should break upon impact while the stone remains intact because stone is much more harder than egg
+              </div>
+              <div class="content has-text-justified custom-background p-1 custom-font" style="height: 102px;font-size: 12px;">
+                (h) A timelapse captures the reaction as <span style="color:red">concentrated sulfuric</span> acid is poured onto <span style="color:red">a piece of bread</span>.
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/8-1.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/8-2.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/8-3.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div>
+                <video width="200%" controls>
+                  <source src="./static/videos/qualitative/8-4.mp4" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+              <div class="content has-text-justified custom-background1 p-2 custom-font" style="height: 102px;font-size:11px">
+                Expected Phenomenon: the bread should shrink, turn black and become carbonized due to dehydration of concentrated sulfuric acid 
+              </div>
+          </div>
+        </div>
+      </div>
+      </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ <section class="hero is-light is-small">
+  <div class="hero-body has-text-centered">
+    <h1 class="title is-1 MMT-Bench">Discussion</h1>
+  </div>
+</section>
+<section class="section">
+<div class="container is-max-desktop content">
+<div class="content has-text-justified">
+<p>To explore potential solutions for the challenges posed by PhyGenBench, We focus on widely used
+and proven-effective methods such as scaling laws, prompt engineering , and some method like Venhancer aimed to improve general video quality. And we determine whether they can resolve the inability of current T2V
+models to generate videos aligned with physical commonsense. Through quantitative and qualitative
+analysis, we find:</p>
+<p> <b>1) Scaling up models can solve some issues but still fails to handle dynamic
+physical phenomenons, which we believe requires extensive training on synthetic data.</b> </p>
+<p><b>2) Prompt engineering only solves a few simple issues (e.g., flame color), highlighting the difficulty and significance of PhyGenBench.</b></p> 
+<p><b>3) While some methods improve general video quality,they do not enhance the model's understanding of physical commonsense.</b></p>
+</div>
+
+</div>
+</section>
+<!-- @PAN TODO: bibtex -->
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">BibTeX</h2>
+    <pre><code>
+      @misc{meng2024mmiumultimodalmultiimageunderstanding,
+        title={MMIU: Multimodal Multi-image Understanding for Evaluating Large Vision-Language Models}, 
+        author={Fanqing Meng and Jin Wang and Chuanhao Li and Quanfeng Lu and Hao Tian and Jiaqi Liao and Xizhou Zhu and Jifeng Dai and Yu Qiao and Ping Luo and Kaipeng Zhang and Wenqi Shao},
+        year={2024},
+        eprint={2408.02718},
+        archivePrefix={arXiv},
+        primaryClass={cs.CV},
+        url={https://arxiv.org/abs/2408.02718}, 
+  }
+</code></pre>
+  </div>
+</section> -->
+
+<footer class="footer">
+  <!-- <div class="container"> -->
+    <div class="content has-text-centered">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is website adapted from <a href="https://github.com/OpenGVLab/MMT-Bench">MMT-Bench</a>, <a href="https://mmmu-benchmark.github.io/">MMMU</a>, <a href="https://mathvista.github.io/">MathVista</a> and <a href="https://nerfies.github.io/">Nerfies</a>, licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+        </div>
+      </div>
+    </div> 
+   </div>
+</footer>
+
+<script>
+   bulmaCarousel.attach('#results-carousel', {
+      slidesToScroll: 3,
+      slidesToShow: 3,  // 设置同时展示的元素数量为3
+      infinite: true,
+      autoplay: false,
+    });
+    bulmaCarousel.attach('#results1-carousel', {
+        slidesToScroll: 6,
+        slidesToShow: 6,  // 设置同时展示的元素数量为3
+        infinite: true,
+        autoplay: false,
+      });
+    
+  function changeButtonText() {
+    var button = document.getElementById('toggleButton');
+    if (button.innerHTML.includes("Validation Set Leaderboard")) {
+      button.innerHTML = "<b style='font-size: larger;'>Test Set Leaderboard</b> (Click to Switch)";
+    } else {
+      button.innerHTML = "<b style='font-size: larger;'>Validation Set Leaderboard</b> (Click to Switch)";
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var tables = document.querySelectorAll('table');
+
+    tables.forEach(function(table) {
+        if (!table) return;
+
+        var initialRows = Array.from(table.rows).slice(1);
+        table.addEventListener('click', function(event) {
+            var clickedCell = event.target.closest('td, th');
+            if (!clickedCell) return;
+            var headerRow = clickedCell.parentNode;
+            var columnIndex = Array.from(headerRow.cells).indexOf(clickedCell);
+            var type = clickedCell.getAttribute('data-type');
+
+            if (headerRow.rowIndex === 0) {
+                if (columnIndex === 0) {
+                    table.tBodies[0].innerHTML = '';
+                    initialRows.forEach(row => table.tBodies[0].appendChild(row.cloneNode(true)));
+                }
+            }
+        });
+    });
+});
+
+function sortTable(table, column, type, asc) {
+    var tbody = table.tBodies[0];
+    var rows = Array.from(tbody.rows);
+
+    rows.sort(function(a, b) {
+        var valA = a.cells[column].textContent;
+        var valB = b.cells[column].textContent;
+
+        if (type === 'number') {
+            valA = parseFloat(valA);
+            valB = parseFloat(valB);
+        }
+
+        return asc ? valA - valB : valB - valA;
+    });
+
+    rows.forEach(row => tbody.appendChild(row));
+}
+
+  // 切换表格的函数
+  function toggleTables () {
+      var table1 = document.getElementById('table1');
+      var table2 = document.getElementById('table2');
+      table1.classList.toggle('hidden');
+      table2.classList.toggle('hidden');
+  }
+
+  document.getElementById('toggleButton').addEventListener('click', toggleTables);
+  const canvas = document.getElementById('difficulty_level_chart');
+  canvas.style.width = '500px';
+  canvas.style.height = '120px';
+  const ctx = document.getElementById('difficulty_level_chart').getContext('2d');
+  const difficulty_level_chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Easy', 'Medium', 'Hard', 'Overall'],
+      datasets: [{
+        label: 'Fuyu-8B',
+        data: [28.9, 27, 26.4, 27.4],
+        backgroundColor: 'rgba(196, 123, 160, 0.6)',
+        borderColor: 'rgba(196, 123, 160, 1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(196, 123, 160, 1)'
+      },
+      {
+        label: 'Qwen-VL-7B',
+        data: [39.4, 31.9, 27.6, 32.9],
+        backgroundColor: 'rgba(245, 123, 113, 0.6)',
+        borderColor: 'rgba(245, 123, 113, 1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(245, 123, 113, 1)'
+      },
+      {
+        label: 'LLaVA-1.5-13B',
+        data: [41.3, 32.7, 26.7, 33.6],
+        backgroundColor: 'rgba(255, 208, 80, 0.6)',
+        borderColor: 'rgba(255, 208, 80, 1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255, 208, 80, 1)'
+      },
+      {
+        label: 'InstructBLIP-T5-XXL',
+        data: [40.3, 32.3, 29.4, 33.8],
+        backgroundColor: 'rgba(110, 194, 134, 0.6)',
+        borderColor: 'rgba(110, 194, 134, 1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(110, 194, 134, 1)'
+      },
+      {
+        label: 'BLIP-2 FLAN-T5-XXL',
+        data: [41, 32.7, 28.5, 34],
+        backgroundColor: 'rgba(255, 153, 78, 0.6)',
+        borderColor: 'rgba(255, 153, 78, 1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(255, 153, 78, 1)'
+      },
+      {
+        label: 'GPT-4V',
+        data: [76.1, 55.6, 31.2, 55.7],
+        backgroundColor: 'rgba(117, 209, 215, 0.6)',
+        borderColor: 'rgba(117, 209, 215, 1)',
+        borderWidth: 1,
+        hoverBackgroundColor: 'rgba(117, 209, 215, 1)'
+      }]
+    },
+    options: {
+    scales: {
+      y: {
+        beginAtZero: true,
+        min: 0,
+        max: 100,
+        ticks: {
+          stepSize: 20,
+          font: {
+            size: 16
+          }
+        }
+      },
+      x: {
+        ticks: {
+          font: {
+            size: 16 // 设置X轴字体大小
+          }
+        }
+      }
+    },
+    plugins: {
+      legend: {
+        labels: {
+          font: {
+            size: 16 // 设置标签文字大小
+          }
+        }
+      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            return context.dataset.label + ': ' + context.parsed.y;
+          }
+        }
+      }
+    },
+      onHover: (event, chartElement) => {
+        event.native.target.style.cursor = chartElement[0] ? 'pointer' : 'default';
+      }
+    }
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    // Data for the "Diagrams" chart
+    const data_Diagrams = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [27.6, 30.1, 31.8, 30.0, 32.0, 46.8],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+
+    // "data_Diagrams" chart
+    new Chart(document.getElementById('chart_Diagrams'), {
+        type: 'bar',
+        data: data_Diagrams,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Tables" chart
+    const data_Tables  = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [26.6, 29.0, 29.8, 27.8, 27.8, 61.8],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Tables'), {
+        type: 'bar',
+        data: data_Tables,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_PlotsAndCharts " chart
+    const data_PlotsAndCharts   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [24.8, 31.8, 36.2, 30.4, 35.8, 55.6],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_PlotsAndCharts'), {
+        type: 'bar',
+        data: data_PlotsAndCharts ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_ChemicalStructures " chart
+    const data_ChemicalStructures   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [25.0, 27.2, 27.1, 26.7, 25.5, 50.6],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_ChemicalStructures'), {
+        type: 'bar',
+        data: data_ChemicalStructures ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Photographs " chart
+    const data_Photographs   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [27.6, 40.5, 41.4, 44.4, 42.0, 64.2],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Photographs'), {
+        type: 'bar',
+        data: data_Photographs ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Paintings " chart
+    const data_Paintings   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [28.7, 57.2, 53.6, 56.3, 52.1, 75.9],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Paintings'), {
+        type: 'bar',
+        data: data_Paintings ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_GeometricShapes " chart
+    const data_GeometricShapes   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [21.1, 25.3, 21.4, 25.6, 28.3, 40.2],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_GeometricShapes'), {
+        type: 'bar',
+        data: data_GeometricShapes ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_SheetMusic " chart
+    const data_SheetMusic   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [35.2, 33.4, 34.6, 35.8, 34.9, 38.8],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_SheetMusic'), {
+        type: 'bar',
+        data: data_SheetMusic ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_MedicalImages " chart
+    const data_MedicalImages   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [25.4, 29.8, 31.6, 36.4, 29.8, 59.6],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_MedicalImages'), {
+        type: 'bar',
+        data: data_MedicalImages ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_PathologicalImages " chart
+    const data_PathologicalImages   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [26.5, 27.7, 31.2, 35.2, 35.6, 63.6],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_PathologicalImages'), {
+        type: 'bar',
+        data: data_PathologicalImages ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_MicroscopicImages " chart
+    const data_MicroscopicImages   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [27.0, 37.6, 29.2, 36.3, 32.7, 58.0],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_MicroscopicImages'), {
+        type: 'bar',
+        data: data_MicroscopicImages ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_MRIsCTScansXrays " chart
+    const data_MRIsCTScansXrays   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [21.7, 36.9, 33.3, 39.4, 29.8, 50.0],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_MRIsCTScansXrays'), {
+        type: 'bar',
+        data: data_MRIsCTScansXrays ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_SketchesAndDrafts " chart
+    const data_SketchesAndDrafts   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [37.0, 32.1, 29.9, 38.0, 33.7, 55.4],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_SketchesAndDrafts'), {
+        type: 'bar',
+        data: data_SketchesAndDrafts ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Maps " chart
+    const data_Maps   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [38.2, 36.5, 45.9, 47.6, 43.5, 61.8],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Maps'), {
+        type: 'bar',
+        data: data_Maps ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_TechnicalBlueprints " chart
+    const data_TechnicalBlueprints   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [24.7, 25.9, 28.4, 25.3, 27.8, 38.9],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_TechnicalBlueprints'), {
+        type: 'bar',
+        data: data_TechnicalBlueprints ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_TreesAndGraphs " chart
+    const data_TreesAndGraphs   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [30.1, 28.1, 28.8, 28.8, 34.9, 50.0],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_TreesAndGraphs'), {
+        type: 'bar',
+        data: data_TreesAndGraphs ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_MathematicalNotations " chart
+    const data_MathematicalNotations   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [15.8, 27.1, 22.6, 21.8, 21.1, 45.9],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_MathematicalNotations'), {
+        type: 'bar',
+        data: data_MathematicalNotations ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_ComicsAndCartoons " chart
+    const data_ComicsAndCartoons   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [29.0, 51.9, 49.6, 54.2, 51.1, 68.7],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_ComicsAndCartoons'), {
+        type: 'bar',
+        data: data_ComicsAndCartoons ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Sculpture " chart
+    const data_Sculpture   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [30.8, 46.2, 49.6, 51.3, 53.0, 76.1],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Sculpture'), {
+        type: 'bar',
+        data: data_Sculpture ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Portraits " chart
+    const data_Portraits   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [20.9, 52.7, 46.2, 54.9, 47.3, 70.3],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Portraits'), {
+        type: 'bar',
+        data: data_Portraits ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Screenshots " chart
+    const data_Screenshots   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [38.6, 35.7, 38.6, 34.3, 47.1, 65.7],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Screenshots'), {
+        type: 'bar',
+        data: data_Screenshots ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Other " chart
+    const data_Other   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [28.3, 38.3, 50.0, 51.7, 58.3, 68.3],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Other'), {
+        type: 'bar',
+        data: data_Other ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Poster " chart
+    const data_Poster   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [38.6, 50.9, 52.6, 61.4, 64.9, 80.7],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Poster'), {
+        type: 'bar',
+        data: data_Poster ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_IconsAndSymbols " chart
+    const data_IconsAndSymbols   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [23.8, 66.7, 57.1, 59.5, 59.5, 78.6],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_IconsAndSymbols'), {
+        type: 'bar',
+        data: data_IconsAndSymbols ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_HistoricalTimelines " chart
+    const data_HistoricalTimelines   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [30.0, 36.7, 40.0, 43.3, 43.3, 63.3],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_HistoricalTimelines'), {
+        type: 'bar',
+        data: data_HistoricalTimelines ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_3DRenderings " chart
+    const data_3DRenderings   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [33.3, 28.6, 57.1, 38.1, 47.6, 47.6],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_3DRenderings'), {
+        type: 'bar',
+        data: data_3DRenderings ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_DNASequences " chart
+    const data_DNASequences   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [20.0, 45.0, 25.0, 25.0, 45.0, 55.0],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_DNASequences'), {
+        type: 'bar',
+        data: data_DNASequences ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Landscapes " chart
+    const data_Landscapes   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [43.8, 43.8, 50.0, 31.2, 62.5, 68.8],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Landscapes'), {
+        type: 'bar',
+        data: data_Landscapes ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_LogosAndBranding " chart
+    const data_LogosAndBranding   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [21.4, 57.1, 64.3, 35.7, 50.0, 85.7],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_LogosAndBranding'), {
+        type: 'bar',
+        data: data_LogosAndBranding ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          },
+          x: {
+            display: false
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+
+    // "data_Advertisements " chart
+    const data_Advertisements   = {
+        labels: ['Fuyu-8B', 'Qwen-VL-7B', 'InstructBLIP-T5-XXL', 'LLaVA-1.5-13B', 'BLIP-2 FLAN-T5-XXL', 'GPT-4V'],
+        datasets: [{
+            data: [30.0, 60.0, 50.0, 60.0, 70.0, 100.0],
+            backgroundColor: ['rgba(196, 123, 160, 0.6)', 'rgba(245, 123, 113, 0.6)', 'rgba(255, 208, 80, 0.6)', 'rgba(110, 194, 134, 0.6)', 'rgba(255, 153, 78, 0.6)', 'rgba(117, 209, 215, 0.6)'],
+            borderColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,0.4)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)'],
+            hoverBackgroundColor: ['rgba(196, 123, 160, 1)', 'rgba(245, 123, 113,1)', 'rgba(255, 208, 80, 1)', 'rgba(110, 194, 134, 1)', 'rgba(255, 153, 78, 1)', 'rgba(117, 209, 215, 1)']
+        }]
+    };
+    new Chart(document.getElementById('chart_Advertisements'), {
+        type: 'bar',
+        data: data_Advertisements ,
+        options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            min: 0,     
+            max: 100,   
+            ticks: {
+              stepSize: 20 
+            }
+          },
+          x: {
+            display: false 
+          }
+        },
+        plugins: {
+          legend: {
+            display: false 
+          },
+          tooltip: {
+          }
+        }
+      }
+    });
+});
+
+</script>
+
+<style>
+  .custom-background {
+  background-color:#FFF2CC; /* 你想要的背景颜色 */
+}
+.custom-background1 {
+  background-color:#FBE5D6; /* 你想要的背景颜色 */
+}
+.custom-font {
+  font-family: 'Comic Sans MS', cursive, 'Trebuchet MS', sans-serif; /* 你想要的字体 */
+  font-size: 16px; /* 字体大小 */
+  font-weight: bold; /* 字体粗细 */
+}
+  .hidden {
+      display: none;
+  }
+  .sortable:hover {
+      cursor: pointer;
+  }
+  .asc::after {
+      content: ' ↑';
+  }
+  .desc::after {
+      content: ' ↓';
+  }
+  #toggleButton {
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    color: #555555;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 25px; 
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition-duration: 0.4s;
+  }
+
+  #toggleButton:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19); /* 鼠标悬停时的阴影效果 */
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+  }
+
+  th, td {
+      text-align: left;
+      padding: 8px;
+  }
+
+  th {
+      background-color: #f2f2f2;
+      border-bottom: 2px solid #ddd;
+  }
+
+  td:hover {background-color: #ffffff;}
+</style>
+</body>
+</html>
